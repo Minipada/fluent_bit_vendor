@@ -75,6 +75,7 @@ ExternalProject_Add(fluent_bit_src
     -DFLB_OUT_PGSQL=On
     -DFLB_SHARED_LIB=On
     -DFLB_PROXY_GO=On
+    -DSYSTEMD_UNITDIR=/usr/lib/systemd/system
     ${cmake_configure_args}
 )
 

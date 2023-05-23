@@ -14,6 +14,7 @@
     <buildtool_depend>bison</buildtool_depend>
     <buildtool_depend>libpq-dev</buildtool_depend>
     <buildtool_depend>libssl-dev</buildtool_depend>
+    <buildtool_depend>yaml</buildtool_depend>
 
     <export>
         <build_type>ament_cmake</build_type>
