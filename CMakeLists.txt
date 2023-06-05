@@ -55,10 +55,10 @@ else()
 endif()
 set(fluent_bit_external_project_dir ${CMAKE_CURRENT_BINARY_DIR}/fluent_bit)
 include(ExternalProject)
-set(fluent_bit_version "1ab360f79c73627a0789551287c074aa2016bf26")
+set(fluent_bit_version "fix-2.1.3")
 # message(${CMAKE_CURRENT_LIST_DIR})
 ExternalProject_Add(fluent_bit_src
-  GIT_REPOSITORY https://github.com/fluent/fluent-bit
+  GIT_REPOSITORY https://github.com/minipada/fluent-bit
   GIT_TAG ${fluent_bit_version}
   GIT_CONFIG advice.detachedHead=false
   PATCH_COMMAND patch -p1 < ${CMAKE_CURRENT_LIST_DIR}/mpack.patch
@@ -75,7 +75,7 @@ ExternalProject_Add(fluent_bit_src
     -DFLB_OUT_PGSQL=On
     -DFLB_SHARED_LIB=On
     -DFLB_PROXY_GO=On
-    -DSYSTEMD_UNITDIR=/usr/lib/systemd/system
+    -DSYSTEMD_UNITDIR=${fluent_bit_external_project_dir}/install/system
     ${cmake_configure_args}
 )
 
@@ -84,14 +84,16 @@ set(fluent_bit_INCLUDE_DIR "${INSTALL_DIR}/../fluent_bit/install/include")
 set(fluent_bit_LIB_DIR "${INSTALL_DIR}/../fluent_bit/install/lib/fluent-bit")
 
 set(FB_SRC_LIB_INCLUDE_DIR  "${INSTALL_DIR}/src/fluent_bit_src/lib")
+set(FB_SRC_INCLUDE_DIR  "${INSTALL_DIR}/src/fluent_bit_src/include/fluent-bit")
 
 set(ares_INCLUDE_FILES
-  "${FB_SRC_LIB_INCLUDE_DIR}/c-ares-1.18.1/include/ares.h"
-  "${FB_SRC_LIB_INCLUDE_DIR}/c-ares-1.18.1/include/ares_build.h"
-  "${FB_SRC_LIB_INCLUDE_DIR}/c-ares-1.18.1/include/ares_rules.h"
-  "${FB_SRC_LIB_INCLUDE_DIR}/c-ares-1.18.1/include/ares_version.h"
+  "${FB_SRC_LIB_INCLUDE_DIR}/c-ares-1.19.0/include/ares.h"
+  "${FB_SRC_LIB_INCLUDE_DIR}/c-ares-1.19.0/include/ares_build.h"
+  "${FB_SRC_LIB_INCLUDE_DIR}/c-ares-1.19.0/include/ares_rules.h"
+  "${FB_SRC_LIB_INCLUDE_DIR}/c-ares-1.19.0/include/ares_version.h"
 )
 set(cfl_INCLUDE_DIR "${FB_SRC_LIB_INCLUDE_DIR}/cfl/include/cfl")
+set(config_format_INCLUDE_DIR "${FB_SRC_INCLUDE_DIR}/config_format")
 set(cmetrics_INCLUDE_DIR "${FB_SRC_LIB_INCLUDE_DIR}/cmetrics/include/cmetrics")
 set(ctraces_INCLUDE_DIR "${FB_SRC_LIB_INCLUDE_DIR}/ctraces/include/ctraces")
 set(jsmn_INCLUDE_DIR "${FB_SRC_LIB_INCLUDE_DIR}/jsmn")
@@ -110,6 +112,7 @@ set(xxhash_INCLUDE_FILES
 install(DIRECTORY ${fluent_bit_INCLUDE_DIR}/ DESTINATION include)
 install(FILES ${ares_INCLUDE_FILES} DESTINATION include)
 install(DIRECTORY ${cfl_INCLUDE_DIR}/ DESTINATION include/cfl)
+install(DIRECTORY ${config_format_INCLUDE_DIR}/ DESTINATION include/config_format)
 install(DIRECTORY ${cmetrics_INCLUDE_DIR}/ DESTINATION include/cmetrics)
 install(DIRECTORY ${ctraces_INCLUDE_DIR}/ DESTINATION include/ctraces)
 install(DIRECTORY ${jsmn_INCLUDE_DIR}/ DESTINATION include/jsmn)
